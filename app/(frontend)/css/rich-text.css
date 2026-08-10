@@ -1,0 +1,87 @@
+.rich-text h1 {
+  /* font-size: 3.75rem; */
+  @apply text-6xl;
+}
+.rich-text h2 {
+  /* font-size: 3rem; */
+  @apply text-5xl;
+}
+.rich-text h3 {
+  /* font-size: 2.75rem; */
+  @apply text-4xl;
+}
+.rich-text h4 {
+  /* font-size: 1.875rem; */
+  @apply text-3xl;
+}
+.rich-text h5 {
+  /* font-size: 1.5rem; */
+  @apply text-2xl;
+}
+.rich-text h6 {
+  /* font-size: 1.25rem;  */
+  @apply text-xl; 
+}
+
+.rich-text h1,
+.rich-text h2,
+.rich-text h3,
+.rich-text h4,
+.rich-text h5,
+.rich-text h6 {
+  /* font-weight: var(--font-weight-semibold); */
+  @apply font-semibold;
+}
+
+.rich-text a {
+    @apply text-primary-800 dark:text-primary-600 hover:underline;
+}
+
+.rich-text input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  @apply w-5 h-5 mr-2 cursor-pointer rounded-sm bg-gray-400 dark:bg-gray-200;
+}
+
+.rich-text input[type="checkbox"]:checked {
+  @apply relative bg-primary-800 dark:bg-primary-600;
+}
+
+.rich-text input[type="checkbox"]:checked +label {
+   text-decoration: line-through;
+}
+
+.rich-text input[type="checkbox"]:checked::before {
+  content: '✓';
+
+  @apply text-white flex items-center justify-center w-5 h-5 p-0 m-0 overflow-hidden absolute left-0 top-0 z-10;
+}   
+
+.rich-text ol.list-number {
+  @apply list-decimal list-inside ml-4 md:ml-6 my-4;
+}
+
+.rich-text ul.list-bullet {
+  @apply list-disc list-inside ml-4 md:ml-6 my-4;
+}
+
+.rich-text ul.list-bullet > .nestedListItem > ul.list-bullet {
+  list-style: circle;
+  @apply list-inside ml-4 md:ml-6 my-4;
+}
+
+.rich-text ul.list-bullet > .nestedListItem > ul.list-bullet > .nestedListItem > ul.list-bullet {
+  list-style: square;
+  @apply list-inside ml-4 md:ml-6 my-4;
+}
+
+.rich-text blockquote {
+  @apply relative border-l-4 border-primary-400 dark:border-primary-600 bg-primary-50 dark:bg-primary-900/20 p-4 my-6;
+}
+
+.rich-text blockquote::before {
+  content: '“';
+  @apply font-serif font-bold text-gray-500 text-9xl absolute -top-8 left-2 opacity-20 z-10;
+}
