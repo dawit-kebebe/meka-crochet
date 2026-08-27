@@ -1,6 +1,6 @@
 "use client";
 
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/autoplay';
@@ -10,7 +10,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 const Slider = () => {
     return (
-        <div className="max-w-7xl mx-auto p-4">
+        <div className="max-w-7xl mx-auto">
             <Swiper
                 modules={[Pagination,  Autoplay]}
                 loop={true}

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeModeScript } from "flowbite-react";
 import Header from "./components/Header";
+import InitMiniapp from "./components/InitMiniapp";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,6 +21,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+
+
+
   return (
     <html
       lang="en"
@@ -28,11 +32,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <ThemeModeScript />
+        <InitMiniapp />
       </head>
 
       <body>
         <Header />
-        {children}
+        <div className="w-full flex justify-center">
+          {children}
+        </div>
       </body>
     </html>
   );

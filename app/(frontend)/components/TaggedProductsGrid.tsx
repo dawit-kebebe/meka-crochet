@@ -1,16 +1,14 @@
 "use client";
 
-import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 
 import { useState } from 'react';
-import { FreeMode } from 'swiper/modules';
 import ProductCard from './ProductCard';
 
-const TaggedProducts = () => {
+const TaggedProductsGrid = () => {
     const [activeTab, setActiveTab] = useState('new-products');
 
     const tags = [
@@ -28,29 +26,18 @@ const TaggedProducts = () => {
                     <button onClick={() => setActiveTab(tag.key)} key={tag.key} className={`${activeTab === tag.key ? 'text-creamy-bg bg-primary-800 border-primary-800 border-2 px-2 py-1 rounded-xl mb-2' : 'text-primary-800 bg-creamy-bg border-primary-800 border-2 px-2 py-1 rounded-xl mb-2' } focus:ring-0 focus:outline-none focus:border-none text-nowrap whitespace-nowrap`}>{tag.title}</button>
                 ))}
             </div>
-            <div className='flex w-full gap-1'>
-                <Swiper
-                    slidesPerView={'auto'}
-                    spaceBetween={30}
-                    freeMode={true}
-                    modules={[FreeMode]}
-                >
-                    <SwiperSlide className='max-w-sm max-h-96 sm:max-h-120'>
-                        <ProductCard />
-                    </SwiperSlide>
-                    <SwiperSlide className='max-w-sm max-h-96 sm:max-h-120'>
-                        <ProductCard />
-                    </SwiperSlide>
-                    <SwiperSlide className='max-w-sm max-h-96 sm:max-h-120'>
-                        <ProductCard />
-                    </SwiperSlide>
-                    <SwiperSlide className='max-w-sm max-h-96 sm:max-h-120'>
-                        <ProductCard />
-                    </SwiperSlide>
-                </Swiper>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full gap-1'>
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
             </div>
         </div>
   )
 }
 
-export default TaggedProducts
+export default TaggedProductsGrid
