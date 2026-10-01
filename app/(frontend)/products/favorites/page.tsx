@@ -7,7 +7,10 @@ const FavoriteProducts = async () => {
   return (
     <div className='max-w-7xl w-full px-4'>
         <SectionTitle>Your Favorites</SectionTitle>
-        <ProductListing />
+        <ProductListing
+          emptyTitle="No Favorites Yet"
+          emptyDescription="You haven't added any products to your favorites yet. Explore our collection and add your favorite items!"
+        />
     </div>
     
   )

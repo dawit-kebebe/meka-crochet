@@ -1,28 +1,24 @@
 "use client";
 
-import { Avatar, Button, CloseIcon, Drawer, DrawerHeader, DrawerItems, Dropdown } from "flowbite-react";
+import { Avatar, Button, CloseIcon, Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
 import Link from "next/link";
-import { useState, useSyncExternalStore } from "react";
-
+import { useState } from "react";
 import { usePathname } from 'next/navigation'
-import type { WebAppUser, WebAppInitData } from "telegram-web-app";
-
-const emptySubscribe = () => () => {};
-const getTelegramInitData = (): WebAppInitData | undefined => {
-    return typeof window !== "undefined" ? window.Telegram?.WebApp?.initDataUnsafe : undefined;
-};
+import { useTelegramAuth } from "../context/TelegramAuthContext";
+import { useCart } from "../context/CartContext";
 
 export function Header() {
-
-    const userInfo = useSyncExternalStore(
-        emptySubscribe,
-        getTelegramInitData,
-        () => undefined
-    );
+    const { user, telegramRaw } = useTelegramAuth();
+    const { totalItemsCount } = useCart();
     const [isOpen, setIsOpen] = useState(false);
     const handleClose = () => setIsOpen(false);
 
     const pageRouter = usePathname();
+
+    const firstName = user?.firstName || telegramRaw?.first_name || '';
+    const lastName = user?.lastName || telegramRaw?.last_name || '';
+    const username = user?.username || telegramRaw?.username || '';
+    const photoUrl = user?.photoUrl || telegramRaw?.photo_url || "https://flowbite.com/docs/images/people/profile-picture-2.jpg";
 
     return (
         <>
@@ -43,7 +39,7 @@ export function Header() {
                                 <svg width="20" height="22" viewBox="0 0 20 22" fill="none" className="w-6 h-6 text-primary-800" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M9.99055 1.92C10.5207 1.91858 10.9494 1.48763 10.948 0.957444C10.9466 0.427255 10.5156 -0.00140454 9.98543 3.45869e-06L9.99055 1.92ZM5.19826 4.86912C5.19826 5.39931 5.62808 5.82912 6.15826 5.82912C6.68847 5.82912 7.11823 5.39931 7.11823 4.86912H5.19826ZM5.19826 6.08C5.19826 6.61019 5.62808 7.04 6.15826 7.04C6.68847 7.04 7.11823 6.61019 7.11823 6.08H5.19826ZM7.11823 4.86912C7.11823 4.33893 6.68847 3.90912 6.15826 3.90912C5.62808 3.90912 5.19826 4.33893 5.19826 4.86912H7.11823ZM6.04328 3.91603C5.51691 3.97954 5.14167 4.45773 5.20518 4.98411C5.26868 5.51048 5.74687 5.88571 6.27325 5.82221L6.04328 3.91603ZM7.43822 4.8L7.42658 5.76H7.43822V4.8ZM12.4123 4.8V5.76008L12.4241 5.75993L12.4123 4.8ZM13.5774 5.82221C14.1037 5.88571 14.5819 5.51048 14.6454 4.98411C14.7089 4.45773 14.3337 3.97954 13.8074 3.91603L13.5774 5.82221ZM6.28949 5.82064C6.81499 5.75029 7.18402 5.26724 7.11362 4.74174C7.04322 4.21623 6.56023 3.84726 6.03472 3.91761L6.28949 5.82064ZM2.3285 9.92L1.40558 9.65581C1.4026 9.66618 1.3998 9.67667 1.39718 9.68717L2.3285 9.92ZM1.0485 15.04L0.117175 14.8072C0.110967 14.832 0.105771 14.857 0.101572 14.8822L1.0485 15.04ZM18.7944 15.04L19.7415 14.8828C19.7372 14.8573 19.732 14.8321 19.7257 14.8072L18.7944 15.04ZM17.5144 9.92L18.4457 9.68717C18.4433 9.67706 18.4405 9.66695 18.4377 9.65683L17.5144 9.92ZM13.8129 3.91772C13.2874 3.84689 12.8041 4.21541 12.7333 4.74085C12.6624 5.26629 13.0309 5.74967 13.5564 5.82051L13.8129 3.91772ZM7.11823 9.4336C7.11823 8.90343 6.68847 8.4736 6.15826 8.4736C5.62808 8.4736 5.19826 8.90343 5.19826 9.4336H7.11823ZM5.19826 10.56C5.19826 11.0902 5.62808 11.52 6.15826 11.52C6.68847 11.52 7.11823 11.0902 7.11823 10.56H5.19826ZM9.86255 3.45869e-06C9.33237 -0.00140454 8.90139 0.427255 8.89999 0.957444C8.89858 1.48763 9.32725 1.91858 9.85743 1.92L9.86255 3.45869e-06ZM12.7297 4.86912C12.7297 5.39931 13.1596 5.82912 13.6897 5.82912C14.2199 5.82912 14.6497 5.39931 14.6497 4.86912H12.7297ZM14.6497 4.86912C14.6497 4.33893 14.2199 3.90912 13.6897 3.90912C13.1596 3.90912 12.7297 4.33893 12.7297 4.86912H14.6497ZM12.7297 6.08C12.7297 6.61019 13.1596 7.04 13.6897 7.04C14.2199 7.04 14.6497 6.61019 14.6497 6.08H12.7297ZM14.6497 9.43488C14.6497 8.90471 14.2199 8.47488 13.6897 8.47488C13.1596 8.47488 12.7297 8.90471 12.7297 9.43488H14.6497ZM12.7297 10.56C12.7297 11.0902 13.1596 11.52 13.6897 11.52C14.2199 11.52 14.6497 11.0902 14.6497 10.56H12.7297ZM9.98543 3.45869e-06C7.33954 0.00706906 5.19826 2.15403 5.19826 4.8H7.11823C7.11823 3.21242 8.40296 1.92423 9.99055 1.92L9.98543 3.45869e-06ZM5.19826 4.8V4.86912H7.11823V4.8H5.19826ZM7.11823 6.08V4.86912H5.19826V6.08H7.11823ZM6.27325 5.82221C6.6559 5.77604 7.04117 5.75532 7.42658 5.76L7.45 3.84008C6.97986 3.83436 6.50998 3.85973 6.04328 3.91603L6.27325 5.82221ZM7.43822 5.76L12.4123 5.76008V3.84H7.43822V5.76ZM12.4241 5.75993C12.8095 5.75524 13.1948 5.77604 13.5774 5.82221L13.8074 3.91603C13.3407 3.85973 12.8707 3.83436 12.4007 3.84008L12.4241 5.75993ZM6.03472 3.91761C4.8871 4.07125 3.94596 4.50332 3.17474 5.50611C2.46591 6.42775 1.94152 7.78381 1.40558 9.65581L3.25142 10.1842C3.78302 8.32755 4.22887 7.28489 4.69668 6.67661C5.1021 6.14948 5.544 5.92044 6.28949 5.82064L6.03472 3.91761ZM1.39718 9.68717L0.117175 14.8072L1.97984 15.2728L3.25984 10.1528L1.39718 9.68717ZM0.101572 14.8822C-0.267362 17.0958 0.391697 18.7437 1.70578 19.7908C2.94691 20.7798 4.63227 21.12 6.15442 21.12V19.2C4.85675 19.2 3.66914 18.9002 2.90228 18.2892C2.20835 17.7363 1.72437 16.8242 1.99545 15.1978L0.101572 14.8822ZM6.15442 21.12H9.98799V19.2H6.15442V21.12ZM9.98799 21.12H13.6885V19.2H9.98799V21.12ZM13.6885 21.12C15.209 21.12 16.8936 20.7796 18.1347 19.7908C19.4486 18.7441 20.1089 17.0966 19.7415 14.8828L17.8474 15.1972C18.1174 16.8234 17.6328 17.7359 16.9383 18.2892C16.1712 18.9004 14.984 19.2 13.6885 19.2V21.12ZM19.7257 14.8072L18.4457 9.68717L16.5831 10.1528L17.8631 15.2728L19.7257 14.8072ZM18.4377 9.65683C17.904 7.78483 17.3797 6.42887 16.6705 5.50697C15.8994 4.5046 14.9585 4.07217 13.8129 3.91772L13.5564 5.82051C14.3002 5.9208 14.7429 6.15012 15.1487 6.67767C15.6165 7.2857 16.0624 8.32781 16.5912 10.1832L18.4377 9.65683ZM5.19826 9.4336V10.56H7.11823V9.4336H5.19826ZM9.85743 1.92C11.445 1.92423 12.7297 3.21242 12.7297 4.8H14.6497C14.6497 2.15403 12.5086 0.00706906 9.86255 3.45869e-06L9.85743 1.92ZM12.7297 4.8V4.86912H14.6497V4.8H12.7297ZM12.7297 4.86912V6.08H14.6497V4.86912H12.7297ZM12.7297 9.43488V10.56H14.6497V9.43488H12.7297Z" fill="currentColor" />
                                 </svg>
-                                <div className="absolute text-gray-50 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-red-700 border border-buffer rounded-full -top-2 -inset-e-2">8</div>
+                                <div className="absolute text-gray-50 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-red-700 border border-buffer rounded-full -top-2 -inset-e-2">{totalItemsCount}</div>
                             </Link>
                         </div>
                     </div>
@@ -54,10 +50,10 @@ export function Header() {
                 <DrawerHeader titleIcon={() => <></>} closeIcon={() => <CloseIcon className="text-primary-900 text-2xl" />} />
                 <DrawerItems className="p-0! text-primary-800">
                     <div className="flex flex-col justify-center w-full items-center mt-12">
-                        <Avatar img={userInfo?.user?.photo_url ?? "https://flowbite.com/docs/images/people/profile-picture-2.jpg"} rounded size="xl" />
+                        <Avatar img={photoUrl} rounded size="xl" />
 
-                        <h4 className="text-2xl font-bold text-heading">{userInfo?.user?.first_name} {userInfo?.user?.last_name}</h4>
-                        <p className="mb-3 text-lg text-body md:text-xl">@{userInfo?.user?.username}</p>
+                        <h4 className="text-2xl font-bold text-heading">{firstName || 'Guest'} {lastName}</h4>
+                        {username && <p className="mb-3 text-lg text-body md:text-xl">@{username}</p>}
 
                     </div>
                     <div className="py-5 overflow-y-auto">

@@ -1,5 +1,4 @@
-import ProductListing from '@app/components/blocks/ProductListing';
-import SearchForm from '@app/components/blocks/SearchForm';
+import SearchClient from './SearchClient';
 import type { ProductSearchParams } from '@app/types/ProductSearchParams';
 
 interface ProductSearchProps {
@@ -7,13 +6,8 @@ interface ProductSearchProps {
 }
 
 const ProductSearch = async ({ searchParams }: ProductSearchProps) => {
-  const parameter = await searchParams;
-  return (
-    <div className='max-w-7xl w-full px-4'>
-      <SearchForm />
-      <ProductListing />
-    </div>
-  )
+  await searchParams;
+  return <SearchClient />
 }
 
 export default ProductSearch

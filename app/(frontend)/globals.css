@@ -71,3 +71,7 @@ button {
   scrollbar-width: thin;
 	scrollbar-color: var(--color-primary-700) transparent;
 }
+
+.swiper {
+  margin-left: 0 !important; 
+}

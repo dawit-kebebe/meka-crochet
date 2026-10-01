@@ -7,18 +7,12 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
-// import { Authors } from './collections/Authors.ts'
-// import { BlogCategories } from './collections/BlogCategories.ts'
-// import { Blogs } from './collections/Blogs.ts'
-// import { Media } from './collections/Media.ts'
-// import { Socials } from './collections/Socials.ts'
-// import { Users } from './collections/Users.ts'
-// import { About } from './globals/About.ts'
-// import { Header } from './globals/Header.ts'
-// import { Landing } from './globals/Landing.ts'
-// import { BlogPage } from './globals/Blog.ts'
-// import { ImagePortfolio } from './collections/ImagePortfolio.ts'
-// import { ContactUs } from './collections/ContactUs.ts'
+import { Products } from './collections/Products'
+import { Categories } from './collections/Categories'
+import { Ads } from './collections/Ads'
+import { TelegramUsers } from './collections/TelegramUsers'
+import { Orders } from './collections/Orders'
+import { Media } from './collections/Media'
 import { revalidatePath } from 'next/cache'
 
 
@@ -27,7 +21,6 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
 	admin: {
-		// user: Users.slug,
 		importMap: {
 			baseDir: path.resolve(dirname),
 		},
@@ -58,15 +51,15 @@ export default buildConfig({
 			}
 		})
 	},
-	collections: [],
+	collections: [Products, Categories, Ads, TelegramUsers, Orders, Media],
 	globals: [],
 	editor: lexicalEditor(),
-	secret: process.env.PAYLOAD_SECRET || '',
+	secret: process.env.PAYLOAD_SECRET || 'meka_crochet_payload_secret_key_2026',
 	typescript: {
 		outputFile: path.resolve(dirname, 'payload-types.ts'),
 	},
 	db: mongooseAdapter({
-		url: process.env.DATABASE_URI || '',
+		url: process.env.DATABASE_URI || 'mongodb://127.0.0.1:27017/meka-crochet',
 	}),
 	sharp,
 	plugins: [
