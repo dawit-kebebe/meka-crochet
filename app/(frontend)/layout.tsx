@@ -5,6 +5,7 @@ import { ThemeModeScript } from "flowbite-react";
 import Header from "./components/Header";
 import InitMiniapp from "./components/InitMiniapp";
 import { CartProvider } from "./context/CartContext";
+import { FavoritesProvider } from "./context/FavoritesContext";
 import { TelegramAuthProvider } from "./context/TelegramAuthContext";
 
 const geistSans = Geist({
@@ -37,10 +38,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <TelegramAuthProvider>
           <CartProvider>
-            <Header />
-            <div className="w-full flex justify-center">
-              {children}
-            </div>
+            <FavoritesProvider>
+              <Header />
+              <div className="w-full flex justify-center">
+                {children}
+              </div>
+            </FavoritesProvider>
           </CartProvider>
         </TelegramAuthProvider>
       </body>

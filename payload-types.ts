@@ -73,6 +73,7 @@ export interface Config {
     'telegram-users': TelegramUser;
     orders: Order;
     media: Media;
+    reviews: Review;
     'payload-kv': PayloadKv;
     users: User;
     'payload-locked-documents': PayloadLockedDocument;
@@ -87,6 +88,7 @@ export interface Config {
     'telegram-users': TelegramUsersSelect<false> | TelegramUsersSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -134,14 +136,15 @@ export interface UserAuthOperations {
 export interface Product {
   id: string;
   title: string;
-  slug: string;
   description?: string | null;
-  details?: string | null;
   price: number;
   originalPrice?: number | null;
   category?: (string | null) | Category;
-  imageUrl?: string | null;
   image?: (string | null) | Media;
+  /**
+   * Fallback image URL if no upload is provided.
+   */
+  imageUrl?: string | null;
   images?:
     | {
         image?: (string | null) | Media;
@@ -149,10 +152,10 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
-  rating?: number | null;
-  soldCount?: number | null;
   sizes?: ('S' | 'M' | 'L' | 'XL' | 'XXL')[] | null;
   inStock?: boolean | null;
+  rating?: number | null;
+  soldCount?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -251,6 +254,19 @@ export interface Order {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: string;
+  product: string | Product;
+  author: string;
+  rating: number;
+  comment: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -323,6 +339,10 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
+        relationTo: 'reviews';
+        value: string | Review;
+      } | null)
+    | ({
         relationTo: 'users';
         value: string | User;
       } | null);
@@ -374,14 +394,12 @@ export interface PayloadMigration {
  */
 export interface ProductsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
   description?: T;
-  details?: T;
   price?: T;
   originalPrice?: T;
   category?: T;
-  imageUrl?: T;
   image?: T;
+  imageUrl?: T;
   images?:
     | T
     | {
@@ -389,10 +407,10 @@ export interface ProductsSelect<T extends boolean = true> {
         imageUrl?: T;
         id?: T;
       };
-  rating?: T;
-  soldCount?: T;
   sizes?: T;
   inStock?: T;
+  rating?: T;
+  soldCount?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -475,6 +493,18 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  product?: T;
+  author?: T;
+  rating?: T;
+  comment?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

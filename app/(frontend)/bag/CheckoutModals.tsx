@@ -43,9 +43,9 @@ const CheckoutModals = () => {
     return () => cancelAnimationFrame(handle);
   }, [initialName, user?.phone]);
 
-  const openPayNow = () => {
-    window.open(process.env.NEXT_PUBLIC_PAYMENT_URL!, '_blank', 'noopener,noreferrer');
-  };
+  // const openPayNow = () => {
+  //   window.open(process.env.NEXT_PUBLIC_PAYMENT_URL!, '_blank', 'noopener,noreferrer');
+  // };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
@@ -235,7 +235,7 @@ const CheckoutModals = () => {
                 </Button>
               )}
 
-              <Button
+              {/* <Button
                 onClick={() => {
                   setOpenModal(false);
                   openPayNow();
@@ -243,7 +243,7 @@ const CheckoutModals = () => {
                 className="bg-primary-800! text-creamy-bg rounded-lg text-xl py-4! cursor-pointer"
               >
                 Pay Now
-              </Button>
+              </Button> */}
             </div>
           )}
         </ModalBody>

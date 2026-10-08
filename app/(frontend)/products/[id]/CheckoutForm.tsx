@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import SizeSelector from '@app/components/SizeSelector'
 import ProductDetailTabs from '@app/components/ProductDetailTabs'
+import Reviews from '@app/components/Reviews'
 import { Button, Modal, ModalBody } from 'flowbite-react';
 import { ProductItem, useCart } from '@app/context/CartContext';
 
@@ -11,6 +12,7 @@ interface CheckoutFormProps {
 }
 
 const defaultProduct: ProductItem = {
+    id: '6a9070b0e50b4d43351f74f3',
     title: 'Shoes',
     slug: 'shoes',
     price: 120,
@@ -47,19 +49,24 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ product = defaultProduct })
 
     const handleIncrease = (e: React.MouseEvent) => {
         e.preventDefault();
-        addToCart(product, selectedSize, 1);
+        const prodId = product.id || product.slug;
+        if (prodId) {
+            updateQuantity(prodId, numberOfItems + 1, selectedSize);
+        }
     }
 
     const handleDecrease = (e: React.MouseEvent) => {
         e.preventDefault();
         const prodId = product.id || product.slug;
-        updateQuantity(prodId, numberOfItems - 1, selectedSize);
+        if (prodId) {
+            updateQuantity(prodId, numberOfItems - 1, selectedSize);
+        }
     }
 
     const totalPrice = (product.price * numberOfItems).toFixed(2);
 
     return (
-        <form className='w-full' onSubmit={(e) => e.preventDefault()}>
+        <div className='w-full'>
             <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
                 <ModalBody className='bg-creamy-bg! text-primary-800! py-8 rounded-2xl'>
                     <div className="text-center">
@@ -80,11 +87,11 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ product = defaultProduct })
                 onSelectedSize={(size) => setSelectedSize(size)}
                 defaultSize='M'
             />
-            <div className='flex items-center gap-4 text-primary-800 mt-4'>
+            <div className='w-full text-primary-800 mt-6'>
                 <ProductDetailTabs
                     tabs={[
                         { title: 'Description', content: product.description || 'This is profile tab associated content.' },
-                        { title: 'Details', content: 'Handcrafted premium crochet item made with care.' },
+                        { title: 'Reviews', content: <Reviews product={product} /> },
                     ]}
                 />
             </div>
@@ -125,7 +132,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ product = defaultProduct })
                             </>
                 }
             </div>
-        </form>
+        </div>
     )
 }
 

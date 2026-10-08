@@ -1,43 +1,56 @@
 "use client";
-import React from 'react';
 
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import React, { useState } from 'react';
 
-interface TabsProps {
-  tabs: {
-    title: string,
-    content: React.ReactNode | React.ReactNode[]
-  }[],
+export interface TabItem {
+  title: string;
+  content: React.ReactNode;
 }
 
-const ProductDetailTabs = ({ tabs }: TabsProps) => {
-  const [selectedTab, setSelectedTab] = React.useState(tabs[0].title.toLowerCase().replace(" ", "-"));
-  const params = useParams();
-  console.log(params)
+interface ProductDetailTabsProps {
+  tabs: TabItem[];
+}
+
+const ProductDetailTabs: React.FC<ProductDetailTabsProps> = ({ tabs }) => {
+  const [activeTab, setActiveTab] = useState(0);
+
+  if (!tabs || tabs.length === 0) return null;
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="border-b border-gray-400 w-full">
-        <ul className="flex flex-nowrap -mb-px w-full font-medium text-center text-body">
-          {tabs.map((tab, index) => (
-            <li className="me-2 w-full" key={index}>
-              <Link onClick={() => setSelectedTab(tab.title.toLowerCase().replace(" ", "-"))} href={`#${tab.title.toLowerCase().replace(" ", "-")}`} className={`${tab.title.toLowerCase().replace(" ", "-") === selectedTab ? "border-primary-800 text-primary-800 font-semibold" : "text-primary-800 border-transparent"} w-full inline-flex items-center justify-center p-4 border-b rounded-t-base group`}>
+    <div className="w-full">
+      <div className="border-b border-creamy-bg-darker/40 w-full">
+        <div className="flex flex-nowrap -mb-px w-full gap-4">
+          {tabs.map((tab, index) => {
+            const isActive = index === activeTab;
+            return (
+              <button
+                type="button"
+                key={tab.title}
+                onClick={() => setActiveTab(index)}
+                className={`py-3 px-1 text-center font-bold text-base sm:text-lg border-b-2 transition-colors cursor-pointer ${
+                  isActive
+                    ? 'border-primary-800 text-primary-800'
+                    : 'border-transparent text-primary-800/60 hover:text-primary-800'
+                }`}
+              >
                 {tab.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+              </button>
+            );
+          })}
+        </div>
       </div>
-      <div className="w-full p-4">
+      <div className="w-full pt-4">
         {tabs.map((tab, index) => (
-          <div id={`${tab.title.toLowerCase().replace(" ", "-")}`} key={index} className={`${tab.title.toLowerCase().replace(" ", "-") === selectedTab ? "block" : "hidden"}`}>
+          <div
+            key={tab.title}
+            className={index === activeTab ? 'block' : 'hidden'}
+          >
             {tab.content}
           </div>
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductDetailTabs
+export default ProductDetailTabs;

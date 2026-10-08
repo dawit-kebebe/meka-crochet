@@ -13,6 +13,7 @@ import { Ads } from './collections/Ads'
 import { TelegramUsers } from './collections/TelegramUsers'
 import { Orders } from './collections/Orders'
 import { Media } from './collections/Media'
+import { Reviews } from './collections/Reviews'
 import { revalidatePath } from 'next/cache'
 
 
@@ -51,7 +52,7 @@ export default buildConfig({
 			}
 		})
 	},
-	collections: [Products, Categories, Ads, TelegramUsers, Orders, Media],
+	collections: [Products, Categories, Ads, TelegramUsers, Orders, Media, Reviews],
 	globals: [],
 	editor: lexicalEditor(),
 	secret: process.env.PAYLOAD_SECRET || 'meka_crochet_payload_secret_key_2026',

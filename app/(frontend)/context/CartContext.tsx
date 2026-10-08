@@ -6,7 +6,7 @@ export interface ProductItem {
   id?: string
   _id?: string
   title: string
-  slug: string
+  slug?: string
   price: number
   originalPrice?: number
   category?: string

@@ -26,7 +26,6 @@ export function formatProduct(doc: Product): ProductItem {
   return {
     id: doc.id,
     title: doc.title,
-    slug: doc.slug,
     price: doc.price,
     originalPrice: doc.originalPrice ?? undefined,
     category: categoryName,
