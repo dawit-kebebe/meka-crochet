@@ -259,6 +259,14 @@ export interface Order {
 export interface Review {
   id: string;
   product: string | Product;
+  /**
+   * Linked Telegram user account who submitted the review
+   */
+  user?: (string | null) | TelegramUser;
+  /**
+   * Telegram ID of reviewer
+   */
+  telegramId?: string | null;
   author: string;
   rating: number;
   comment: string;
@@ -500,6 +508,8 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface ReviewsSelect<T extends boolean = true> {
   product?: T;
+  user?: T;
+  telegramId?: T;
   author?: T;
   rating?: T;
   comment?: T;

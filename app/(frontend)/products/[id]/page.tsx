@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import { cache } from 'react';
 import ProductSlider from '../../components/ProductSlider';
 import CheckoutForm from './CheckoutForm';
 import { getPayload } from 'payload';
@@ -10,9 +12,73 @@ interface ProductProps {
   params: Promise<{ id: string }>
 }
 
+const getCachedProduct = cache(async (id: string): Promise<ProductItem | null> => {
+  try {
+    const payload = await getPayload({ config });
+    const res = await payload.findByID({
+      collection: 'products',
+      id,
+      depth: 2,
+    });
+
+    if (res) {
+      return formatProduct(res);
+    }
+  } catch (err) {
+    console.error('Error fetching product details by id:', err);
+  }
+  return null;
+});
+
+export async function generateMetadata({ params }: ProductProps): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getCachedProduct(id);
+
+  const title = product ? `${product.title} | Meka Crochet` : 'Meka Crochet - Handcrafted Crochet Item';
+  const description =
+    product?.description ||
+    'Handcrafted premium crochet item made with care. Discover unique handcrafted creations at Meka Crochet.';
+
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://mekacrochet.com';
+  const rawImage = product?.imageUrl || (product?.images && product.images[0]) || 'https://picsum.photos/600/800';
+  const imageUrl = rawImage.startsWith('http')
+    ? rawImage
+    : `${baseUrl}${rawImage.startsWith('/') ? '' : '/'}${rawImage}`;
+
+  const productUrl = `${baseUrl}/products/${id}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: productUrl,
+      siteName: 'Meka Crochet',
+      images: [
+        {
+          url: imageUrl,
+          width: 800,
+          height: 800,
+          alt: product?.title || 'Meka Crochet Item',
+        },
+      ],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
+
 const Product = async ({ params }: ProductProps) => {
   const { id } = await params;
-  let product: ProductItem = {
+  const fetchedProduct = await getCachedProduct(id);
+
+  const product: ProductItem = fetchedProduct || {
     id,
     title: 'Crochet Item',
     price: 450,
@@ -24,21 +90,6 @@ const Product = async ({ params }: ProductProps) => {
     images: ['https://picsum.photos/600/800', 'https://picsum.photos/600/801'],
   };
 
-  try {
-    const payload = await getPayload({ config });
-    const res = await payload.findByID({
-      collection: 'products',
-      id,
-      depth: 2,
-    });
-
-    if (res) {
-      product = formatProduct(res);
-    }
-  } catch (err) {
-    console.error('Error fetching product details by id:', err);
-  }
-
   const productImages = product.images && product.images.length > 0
     ? product.images
     : [product.imageUrl || 'https://picsum.photos/600/800'];
@@ -49,7 +100,7 @@ const Product = async ({ params }: ProductProps) => {
         <ProductSlider images={productImages} title={product.title} />
       </div>
       <div className='flex items-center justify-end mt-2'>
-        <ShareButton />
+        <ShareButton product={product} />
       </div>
       <div className='mt-3 text-primary-800'>
         <h1 className='text-3xl sm:text-4xl font-bold'>{product.title}</h1>
@@ -82,7 +133,7 @@ const Product = async ({ params }: ProductProps) => {
       </div>
       <CheckoutForm product={product} />
     </div>
-  )
-}
+  );
+};
 
-export default Product
+export default Product;

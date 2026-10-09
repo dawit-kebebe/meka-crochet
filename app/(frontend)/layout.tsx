@@ -19,6 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://mekacrochet.com'),
   title: "Meka Crochet - Telegram Mini App",
   description: "Handcrafted crochet items and accessories",
 };
